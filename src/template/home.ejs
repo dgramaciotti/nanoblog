@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech thoughts</title>
+    <%- include('../base/style.html') %>
+</head>
+<body>
+    <%- include('../base/header.html') %>
+    <main>
+        <h1>Daniel Guedes</h1>
+        <p>Hello there! If you're reading this, you've reached my blog. I'm from Brazil, and have worked a few years
+            as a web developer. This is where I dump some of my thoughts.
+        </p>
+        <section>
+            <ul>
+                <% for (let post of posts) { %>
+                    <li>
+                        <a href="<%= post.path %>">
+                            <%= post.title %>
+                        </a>
+                        <span>
+                            -- <%= post.date  %>
+                        </span>
+                    </li>
+                <% } %>
+            </ul>
+        </section>
+    </main>
+    <footer></footer>
+</body>
+</html>

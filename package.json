@@ -1,0 +1,25 @@
+{
+  "name": "nanoblog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/build.ts",
+    "add-post": "npx ts-node src/add-post.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.15.29",
+    "markdown-it": "^14.1.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10"
+  }
+}
