@@ -54,12 +54,20 @@ async function renderPosts(){
     
 }
 
+async function copyAssets(){
+    const assetPath = path.resolve(__dirname, '../posts/assets');
+    const destPath = path.resolve(__dirname, '../dist/assets');
+    fs.cp(assetPath, destPath, {recursive: true});
+}
+
+
 (async () => {
     try{
         await fs.rm(path.resolve(__dirname, '../dist'), {recursive: true, force: true});
         fs.mkdir(path.resolve(__dirname, '../dist'));
         renderHome();
         renderPosts();
+        copyAssets();
     } catch(e){
         console.log('Error building', e);
         throw e;

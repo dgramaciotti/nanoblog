@@ -10,7 +10,7 @@ I want to do the following with my blog:
 2. Customize the theme as much as I want
 3. No costs with hosting
 4. Easy to use, integrates with markdown
-5. No overcomplications around engine or design. Create a markdown, push and be done
+5. No overcomplications around engine or design. Create a markdown file, push and be done
 6. Git can be used to publish and manage the content
 
 With that, I thought of the following way to do it
