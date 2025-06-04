@@ -1,72 +1,49 @@
 import fs from 'fs/promises'
 import path from 'path'
 import markdownit from 'markdown-it'
-import ejs from 'ejs'
+import { renderTemplate } from './renderTemplate'
+import getIndexData from './data'
 const md = markdownit()
 
 
-// 1. Read base HTML template
-// 2. Read all file names within posts folder
-// 3. Add posts list to base HTML
-// 4. Create a new HTML file for each post based on post template
+/** 
+ * Build all pages based on the templates on the template folder
+ * post template is excluded, because it has a different build process
+*/
+async function buildPages(templateVars: Record<string, any>){
+    const files = (await fs.readdir(path.resolve(__dirname, './template'), {withFileTypes: true}))
+        .filter(file => !file.isDirectory() && file.name.endsWith('.ejs') && !file.name.includes('post'));
+    return Promise.all(files.map(file => {
+        const dataIndex = file.name.replace('.ejs', '');
+        return renderTemplate(`./template/${file.name}`, templateVars[dataIndex], `../dist/${file.name.replace('.ejs', '.html')}`);
+    }));
+};
 
-async function renderHome(){
-    const homePath = path.resolve(__dirname, './template/home.ejs')
-    const files = await fs.readdir(path.resolve(__dirname, '../posts'), {withFileTypes: true});
-    const posts = files
-                    .filter(file => !file.isDirectory() && file.name.endsWith('.md'))
-                    .map(file => 
-                        (
-                            {
-                                title: file.name.split('_')[1].replace('.md', ''),
-                                path: file.name.replace('.md', '.html'),
-                                date: file.name.split('_')[0],
-                            })
-                    )
-    ejs.renderFile(homePath, {posts}, async (err, data) => {
-        if(err) {
-            throw err
-        }
-        const str = data;
-        
-        fs.writeFile(path.resolve(__dirname, '../dist/index.html'), str, {encoding: 'utf-8'});
-    })
-}
-
-async function renderPosts(){
-    const postPath = path.resolve(__dirname, './template/post.ejs')
-    const files = await fs.readdir(path.resolve(__dirname, '../posts'), {withFileTypes: true});
-    const filePtrs = files
-                    .filter(file => !file.isDirectory() && file.name.endsWith('.md'))
-                    .map(file => file)
-    filePtrs.forEach(async (file) => {
-        const rawFile = await fs.readFile(path.resolve(__dirname, `../posts/${file.name}`), {encoding: 'utf-8'});
+async function buildPosts(){
+    const files = await fs.readdir(path.resolve(__dirname, '../posts'), { withFileTypes: true });
+    const filePtrs = files.filter(file => !file.isDirectory() && file.name.endsWith('.md'));
+    Promise.all(filePtrs.map(async (file) => {
+        const rawFile = await fs.readFile(path.resolve(__dirname, `../posts/${file.name}`), { encoding: 'utf-8' });
         const post = md.render(rawFile);
-        ejs.renderFile(postPath, {post}, async (err, data) => {
-            if(err) {
-                throw err
-            }
-            const str = data;
-            
-            fs.writeFile(path.resolve(__dirname, `../dist/${file.name.replace('.md', '.html')}`), str, {encoding: 'utf-8'});
-        })
-    })
-    
+        return await renderTemplate('./template/post.ejs', {post}, `../dist/${file.name.replace('.md', '.html')}`)
+    }));
 }
 
 async function copyAssets(){
     const assetPath = path.resolve(__dirname, '../posts/assets');
     const destPath = path.resolve(__dirname, '../dist/assets');
-    fs.cp(assetPath, destPath, {recursive: true});
+    fs.cp(assetPath, destPath, { recursive: true });
 }
 
 
 (async () => {
     try{
+        // cleanup dist folder
         await fs.rm(path.resolve(__dirname, '../dist'), {recursive: true, force: true});
         fs.mkdir(path.resolve(__dirname, '../dist'));
-        renderHome();
-        renderPosts();
+        // Build all pages
+        buildPages({ index: await getIndexData()})
+        buildPosts();
         copyAssets();
     } catch(e){
         console.log('Error building', e);
