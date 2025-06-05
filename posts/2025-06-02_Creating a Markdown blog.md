@@ -16,8 +16,8 @@ I want to do the following with my blog:
 With that, I thought of the following way to do it
 
 - use typescript for scripting tasks such as *building* and *publishing*.
-- [gh-pages]() for hosting and [gh-actions]() to automate the build.
-- [ejs]() for some basic templating utilities
+- [gh-pages](https://pages.github.com/) for hosting and [gh-actions](https://github.com/features/actions) to automate the build.
+- [ejs](https://ejs.co/) for some basic templating utilities
 - That's it!
 
 The final result has less than 20 base files, with only a few hundred lines of code. Perhaps I could have used jekyll, or some other engine, but given the effort this seems simple enough. Also, probably styling will be gradually implemented, let's see how it goes...

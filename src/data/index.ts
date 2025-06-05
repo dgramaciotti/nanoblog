@@ -11,8 +11,10 @@ const getIndexData = async () => {
                                 title: file.name.split('_')[1].replace('.md', ''),
                                 path: file.name.replace('.md', '.html'),
                                 date: file.name.split('_')[0],
-                            })
-                    );
+                            }
+                        )
+                    )
+                    .sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return { posts };
 };
 
