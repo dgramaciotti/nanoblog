@@ -3,6 +3,7 @@ import path from 'path'
 import markdownit from 'markdown-it'
 import { renderTemplate } from './renderTemplate'
 import getIndexData from './data'
+import { formatUrlPath } from './utils/utils'
 const md = markdownit()
 
 
@@ -15,7 +16,7 @@ async function buildPages(templateVars: Record<string, any>){
         .filter(file => !file.isDirectory() && file.name.endsWith('.ejs') && !file.name.includes('post'));
     return Promise.all(files.map(file => {
         const dataIndex = file.name.replace('.ejs', '');
-        return renderTemplate(`./template/${file.name}`, templateVars[dataIndex], `../dist/${file.name.replace('.ejs', '.html')}`);
+        return renderTemplate(`./template/${file.name}`, templateVars[dataIndex], `../dist/${formatUrlPath(file.name)}`);
     }));
 };
 
@@ -25,7 +26,7 @@ async function buildPosts(){
     Promise.all(filePtrs.map(async (file) => {
         const rawFile = await fs.readFile(path.resolve(__dirname, `../posts/${file.name}`), { encoding: 'utf-8' });
         const post = md.render(rawFile);
-        return await renderTemplate('./template/post.ejs', {post}, `../dist/${file.name.replace('.md', '.html')}`)
+        return await renderTemplate('./template/post.ejs', {post}, `../dist/${formatUrlPath(file.name)}`)
     }));
 }
 

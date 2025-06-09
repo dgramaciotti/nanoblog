@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { formatUrlPath } from '../utils/utils';
 
 const getIndexData = async () => {
     const files = await fs.readdir(path.resolve(__dirname, '../../posts'), {withFileTypes: true});
@@ -9,7 +10,7 @@ const getIndexData = async () => {
                         (
                             {
                                 title: file.name.split('_')[1].replace('.md', ''),
-                                path: file.name.replace('.md', '.html'),
+                                path: formatUrlPath(file.name),
                                 date: file.name.split('_')[0],
                             }
                         )
