@@ -13,4 +13,16 @@ const formatUrlPath = (path: string): string => {
     return output;
 }
 
-export { formatUrlPath };
+/**
+ * Adds a tag to all elements in the HTML string.
+ * @param htmlString the HTML to be modified
+ * @param tag tag information. Ex. { attr: "class", value: "post", tag: "p" }
+ */
+const addAttr = (htmlString: string, tag: {attr: string; value: string; tag: string}): string => {
+    let output = htmlString;
+    const regex = new RegExp(`(\<${tag.tag})(.*?)\>`, 'g');
+    output = output.replaceAll(regex, `$1$2 ${tag.attr}="${tag.value}" >`)
+    return output;
+}
+
+export { formatUrlPath, addAttr };

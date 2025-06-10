@@ -3,7 +3,7 @@ import path from 'path'
 import markdownit from 'markdown-it'
 import { renderTemplate } from './renderTemplate'
 import getIndexData from './data'
-import { formatUrlPath } from './utils/utils'
+import { addAttr, formatUrlPath } from './utils/utils'
 const md = markdownit()
 
 
@@ -25,7 +25,8 @@ async function buildPosts(){
     const filePtrs = files.filter(file => !file.isDirectory() && file.name.endsWith('.md'));
     Promise.all(filePtrs.map(async (file) => {
         const rawFile = await fs.readFile(path.resolve(__dirname, `../posts/${file.name}`), { encoding: 'utf-8' });
-        const post = md.render(rawFile);
+        let post = md.render(rawFile);
+        post = addAttr(post, { tag: 'a', attr: 'target', value: '_blank'});
         return await renderTemplate('./template/post.ejs', {post}, `../dist/${formatUrlPath(file.name)}`)
     }));
 }
