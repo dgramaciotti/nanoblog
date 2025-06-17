@@ -1,4 +1,4 @@
-### Creating Audit Tables with SQLite and SQL Triggers
+# Creating Audit Tables with SQLite and SQL Triggers
 
 ### Introduction
 
