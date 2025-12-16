@@ -25,4 +25,14 @@ const addAttr = (htmlString: string, tag: {attr: string; value: string; tag: str
     return output;
 }
 
-export { formatUrlPath, addAttr };
+/**
+ * 
+ * @param path Full html string.
+ * @returns the transformed HTML, replacing when necessary jpg or png to webp
+ */
+const replaceImagePaths = (htmlString: string) => {
+    let output = htmlString
+    return output.replace(/(\.png)|(\.jpg)|(\.jpeg)/g, '.webp')
+}
+
+export { formatUrlPath, addAttr, replaceImagePaths };

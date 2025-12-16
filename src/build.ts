@@ -3,7 +3,8 @@ import path from 'path'
 import markdownit from 'markdown-it'
 import { renderTemplate } from './renderTemplate'
 import getIndexData from './data'
-import { addAttr, formatUrlPath } from './utils/utils'
+import { addAttr, formatUrlPath, replaceImagePaths } from './utils/utils'
+import sharp from 'sharp'
 const md = markdownit()
 
 
@@ -27,14 +28,59 @@ async function buildPosts(){
         const rawFile = await fs.readFile(path.resolve(__dirname, `../posts/${file.name}`), { encoding: 'utf-8' });
         let post = md.render(rawFile);
         post = addAttr(post, { tag: 'a', attr: 'target', value: '_blank'});
+        post = replaceImagePaths(post)
         return await renderTemplate('./template/post.ejs', {post}, `../dist/${formatUrlPath(file.name)}`)
     }));
 }
 
-async function copyAssets(){
-    const assetPath = path.resolve(__dirname, '../posts/assets');
-    const destPath = path.resolve(__dirname, '../dist/assets');
-    fs.cp(assetPath, destPath, { recursive: true });
+async function copyAssets() {
+  const assetPath = path.resolve(__dirname, "../posts/assets");
+  const destPath = path.resolve(__dirname, "../dist/assets");
+
+  await fs.mkdir(destPath, { recursive: true });
+
+  const files = await fs.readdir(assetPath);
+
+  return Promise.all(
+    files.map(async (file) => {
+      const src = path.join(assetPath, file);
+
+      const { name, ext } = path.parse(file);
+
+      if(ext === '.svg'){
+        return await fs.copyFile(src, path.join(destPath, `${name}.svg`))
+      }
+
+      const dest = path.join(destPath, `${name}.webp`);
+      const image = sharp(src);
+
+      const meta = await image.metadata();
+      const stat = await fs.stat(src);
+
+      const aspect = meta.width / meta.height;
+
+      let maxWidth = 1000;
+      if (aspect > 1.6) maxWidth = 1200;
+      else if (aspect < 0.8) maxWidth = 900;
+
+      const shouldResize =
+        meta.width > maxWidth || stat.size > 200 * 1024;
+
+      if (shouldResize) {
+        image.resize({
+          width: maxWidth,
+          withoutEnlargement: true,
+        });
+      }
+
+      return image
+        .webp({
+          quality: 75,
+          effort: 4,
+        })
+        .toFile(dest);
+    })
+  );
 }
 
 
