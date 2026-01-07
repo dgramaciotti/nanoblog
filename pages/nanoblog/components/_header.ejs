@@ -1,0 +1,46 @@
+<header class="fixed top-0 left-0 z-10 w-full bg-white">
+    <div class="max-w-[90%] md:max-w-full mx-auto md:mx-0 md:px-[86px]">
+        <div class="flex justify-between items-center py-4 border-b" style="border-color: var(--color-border);">
+            <a href="/nanoblog/">
+                <img class="h-12 hidden md:flex" src="/nanoblog/assets/icons/logo_small.svg" alt="DG Logo" />
+                <img class="h-8 md:hidden flex" src="/nanoblog/assets/icons/logo_minimal.svg" alt="DG Logo" />
+            </a>
+
+        <nav class="hidden md:flex">
+            <ul class="flex flex-row gap-8">
+                <li><a href="/nanoblog/articles" class="text-base hover:opacity-70 transition-opacity">Articles</a></li>
+                <li><a href="/nanoblog/about" class="text-base hover:opacity-70 transition-opacity">About</a></li>
+                <li><a href="/nanoblog/portfolio" class="text-base hover:opacity-70 transition-opacity">Portfolio</a></li>
+            </ul>
+        </nav>
+
+        <button id="menu-btn" class="md:hidden cursor-pointer" aria-expanded="false">
+            <img class="h-8" src="/nanoblog/assets/icons/hamburguer.svg" alt="menu" />
+        </button>
+    </div>
+
+    <nav id="mobile-dropdown" class="hidden md:hidden bg-black border-b fixed w-full h-screen z-10" style="border-color: var(--color-border);">
+        <ul class="flex flex-col py-4 max-w-[90%] mx-auto text-white">
+            <li>
+                <a class="block py-3 border-b hover:opacity-70" style="border-color: var(--color-border);" href="/nanoblog/articles">Articles</a>
+            </li>
+            <li>
+                <a class="block py-3 border-b hover:opacity-70" style="border-color: var(--color-border);" href="/nanoblog/about">About</a>
+            </li>
+            <li>
+                <a class="block py-3 hover:opacity-70" href="/nanoblog/portfolio">Portfolio</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<script>
+    const btn = document.getElementById("menu-btn");
+    const menu = document.getElementById("mobile-dropdown");
+
+    btn.addEventListener("click", () => {
+        const open = !menu.classList.contains("hidden");
+        menu.classList.toggle("hidden");
+        btn.setAttribute("aria-expanded", String(!open));
+    });
+</script>

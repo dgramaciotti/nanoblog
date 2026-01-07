@@ -1,0 +1,28 @@
+<%- include("../components/_head", { title: postName }) %>
+<body class="flex flex-col min-h-screen font-sans" style="font-family: var(--font-sans); color: var(--color-black); background-color: var(--color-white);">
+    <%- include("../components/_header") %>
+
+    <main class="grow">
+        <div class="flex flex-col mx-auto w-[90%] max-w-3xl text-left py-32">
+            <h1 class="font-bold text-5xl pb-6"><%= postName %></h1>
+            
+            <div class="py-6 mt-6 mb-16 flex flex-wrap items-center justify-start gap-8 border-t border-b" style="border-color: var(--color-border);">
+                <p class="flex items-center justify-center gap-2 text-sm" style="color: #666;">
+                    <img src="/nanoblog/assets/icons/calendar.svg" alt="calendar icon" />
+                    <span><%= postDate %></span>
+                </p>
+                <p class="flex items-center justify-center gap-2 text-sm" style="color: #666;">
+                    <img src="/nanoblog/assets/icons/clock.svg" alt="clock icon" />
+                    <span><%= postTime %></span>
+                </p>
+            </div>
+            
+            <div class="article-body">
+                <%- post %>
+            </div>
+        </div>
+    </main>
+
+    <%- include("../components/_footer") %>
+</body>
+</html>

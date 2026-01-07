@@ -1,0 +1,48 @@
+<%- include("./components/_head", { title: 'About' }) %>
+<body class="flex flex-col min-h-screen font-sans" style="font-family: var(--font-sans); color: var(--color-black); background-color: var(--color-white);">
+    <%- include("./components/_header") %>
+
+    <main class="grow">
+        <div class="max-w-[90%] md:max-w-full mx-auto md:mx-0 md:px-21.5 py-32">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+                <!-- Left column: Content -->
+                <div>
+                    <h1 class="text-5xl font-bold mb-8">About</h1>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        I'm a software engineer from Brazil, with broad experience across fields. I have worked with educational, pharmaceutical, finance and other companies, in roles which have taken me all around the software development stack. Around 7 years of experience. Mostly web.
+                    </p>
+                    
+                    <p class="text-lg leading-relaxed mb-8">
+                        You can check more of my work on:
+                    </p>
+                    
+                    <div class="flex flex-col gap-3 mb-8">
+                        <a href="https://www.linkedin.com/in/daniel-guedes-79a05a176/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
+                            <img src="/nanoblog/assets/icons/linkedin.svg" alt="LinkedIn" class="w-5 h-5" />
+                            <span class="font-semibold">LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/dgramaciotti" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
+                            <img src="/nanoblog/assets/icons/github.svg" alt="GitHub" class="w-5 h-5" />
+                            <span class="font-semibold">Github</span>
+                        </a>
+                    </div>
+                    
+                    <p class="text-lg">
+                        Or for the more <strong>flashy</strong> stuff, the <a href="/nanoblog/portfolio" class="underline hover:opacity-70 transition-opacity">portfolio</a>.
+                    </p>
+                </div>
+                
+                <!-- Right column: Photo -->
+                <div class="flex justify-center md:justify-end">
+                    <div class="w-full max-w-100 aspect-square rounded-lg overflow-hidden">
+                        <img src="/nanoblog/assets/profile.webp" alt="Profile picture">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include("./components/_footer") %>
+</body>
+</html>

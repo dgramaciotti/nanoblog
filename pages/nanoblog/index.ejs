@@ -1,0 +1,33 @@
+<%- include("./components/_head", { title: '' }) %>
+<body class="flex flex-col min-h-screen font-sans" style="font-family: var(--font-sans); color: var(--color-black); background-color: var(--color-white);">
+    <%- include("./components/_header") %>
+
+    <main class="flex items-center justify-center flex-col text-center max-sm:max-w-[90%] max-sm:mx-auto w-full mt-12 py-32 image bg-center bg-no-repeat bg-[url('/nanoblog/assets/site_bg.svg')]">
+       <div class="flex flex-col gap-16">
+         <h1 class="font-bold text-4xl md:text-6xl">Daniel Guedes</h1>
+        <p class="text-xl md:text-2xl">Hello There, I'm Daniel, Software Engineer from Brazil</p>
+       </div>
+       <nav class="mt-18">
+        <ul class="list-none font-bold text-2xl flex flex-col gap-4 md:gap-8 md:flex-row">
+            <li>
+                <a href="/nanoblog/articles">
+                Articles
+            </a>
+        </li>
+        <li>
+                <a href="/nanoblog/portfolio">
+                Portfolio
+            </a>
+        </li>
+        <li>
+                <a target="_blank" href="https://dgramaciotti.github.io/cv/">
+                CV
+            </a>
+        </li>
+        </ul>
+       </nav>
+    </main>
+
+    <%- include("./components/_footer") %>
+</body>
+</html>

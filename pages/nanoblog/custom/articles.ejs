@@ -1,0 +1,45 @@
+<%- include("../components/_head", { title: '' }) %>
+<body class="flex flex-col min-h-screen font-sans" style="font-family: var(--font-sans); color: var(--color-black); background-color: var(--color-white);">
+    <%- include("../components/_header") %>
+
+    <main class="grow max-w-7xl w-full mx-auto px-8 py-32">
+        <h1 class="text-5xl font-bold mb-16">Articles</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
+            <% if (typeof articles !== 'undefined' && articles.length > 0) { %>
+                <% articles.forEach(article => { %>
+                    <article class="flex gap-6">
+                        <div class="shrink-0 w-24 h-24 rounded overflow-hidden">
+                            <% if (article.coverImage) { %>
+                                <img class="w-full h-full object-contain" src="/nanoblog/assets/<%= article.coverImage %>" alt="<%= article.postName || article.title %>" class="w-full h-full object-cover">
+                            <% } else { %>
+                                <div class="w-full h-full bg-black"></div>
+                            <% } %>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h2 class="text-xl font-semibold mb-2 leading-tight">
+                                <a href="/nanoblog/articles/<%= article.postUrl %>" class="hover:opacity-70 transition-opacity">
+                                    <%= article.postName || article.title %>
+                                </a>
+                            </h2>
+                            <p class="text-sm mb-3 line-clamp-2" style="color: #666;">
+                                <%= article.postDescription || article.description || '' %>
+                            </p>
+                            <div class="flex items-center gap-2 text-sm" style="color: #666;">
+                                <img src="/nanoblog/assets/icons/calendar.svg" alt="calendar icon" />
+                                <time datetime="<%= article.postDate %>">
+                                    <%= article.postDate %>
+                                </time>
+                            </div>
+                        </div>
+                    </article>
+                <% }); %>
+            <% } else { %>
+                <p class="col-span-2 text-center text-lg" style="color: #666;">No articles found.</p>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include("../components/_footer") %>
+</body>
+</html>
