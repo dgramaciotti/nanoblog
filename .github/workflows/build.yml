@@ -1,12 +1,12 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [ main ]  # Or your desired branch
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write   
+  pages: write
   id-token: write
 
 jobs:
@@ -14,15 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build the site
-        run: npm install && @parcel/watcher-linux-x64-glibc && npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Build the site
+        run: npm install && npm run build
+
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist/nanoblog
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
         with:
-          path: ./dist/nanoblog  # Or your build directory
+          path: ./dist/nanoblog
