@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { ejsPlugin, sitemapPlugin, articlePlugin, blogPlugin } from "basic-ssg";
+import { ejsPlugin, sitemapPlugin, articlePlugin, blogPlugin, tailwindPlugin } from "basic-ssg";
 import { assetsPlugin } from "@basic-ssg/plugin-assets";
 
 const copyCss = () => ({
@@ -31,7 +31,7 @@ export default {
   plugins: [
     assetsPlugin(),
     ejsPlugin(),
-    copyCss(),
+    tailwindPlugin(),
     sitemapPlugin(),
     articlePlugin(),
     blogPlugin(),
