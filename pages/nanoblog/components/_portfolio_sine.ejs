@@ -1,0 +1,104 @@
+<canvas id="sineCanvas" class="w-full h-full"></canvas>
+<script>
+    const canvas = document.getElementById('sineCanvas');
+    const ctx = canvas.getContext('2d');
+    const textarea = document.getElementById('code-input');
+    const errorContainer = document.getElementById('error-container');
+
+    let animationId;
+    let offset = 0;
+    let isVisible = false;
+
+    function setFreq(val) {
+        textarea.value = `const FREQUENCY = ${val}`;
+        // Trigger manual resize if textarea grows, though it's fixed here
+        textarea.dispatchEvent(new Event('input'));
+    }
+
+    function getHueFromFreq(freq) {
+        // Clamp 0-500 range to 0-280 Hue for spectrum effect
+        const clampedFreq = Math.min(Math.max(freq, 0), 500);
+        const hue = (clampedFreq / 500) * 280;
+        return `hsl(${hue}, 80%, 60%)`;
+    }
+
+    function parseCode() {
+        const text = textarea.value.trim();
+        const freqMatch = text.match(/^const FREQUENCY = (\d+)$/);
+        
+        if (!freqMatch) {
+            return { freq: null, color: '#333' };
+        }
+
+        const freq = parseInt(freqMatch[1]);
+        const color = getHueFromFreq(freq);
+        
+        return { freq, color };
+    }
+
+    function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.parentElement.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+    }
+
+    function draw() {
+        if (!isVisible) return;
+
+        const { freq, color } = parseCode();
+        const dpr = window.devicePixelRatio || 1;
+        const width = canvas.width / dpr;
+        const height = canvas.height / dpr;
+        
+        if (freq === null) {
+            if (errorContainer) errorContainer.classList.remove('hidden');
+            textarea.style.color = '#ef4444';
+        } else {
+            if (errorContainer) errorContainer.classList.add('hidden');
+            textarea.style.color = 'white';
+        }
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.beginPath();
+        ctx.lineWidth = freq === null ? 1 : 4;
+        ctx.strokeStyle = color;
+        ctx.lineJoin = 'round';
+
+        const amplitude = freq === null ? 5 : 60;
+        const frequency = (freq || 0) / 1000; 
+
+        // Every 2 is good enough, and less intensive
+        for (let x = 0; x < width; x += 2) {
+            const y = (height / 2) + Math.sin(x * frequency + offset) * amplitude;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+
+        ctx.stroke();
+        
+        if (freq !== null) {
+            offset += 0.04; 
+        }
+        
+        animationId = requestAnimationFrame(draw);
+    }
+
+    // Only draw when visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isVisible = entry.isIntersecting;
+            if (isVisible) draw();
+            else cancelAnimationFrame(animationId);
+        });
+    }, { threshold: 0.1 });
+
+    window.addEventListener('resize', resize);
+    observer.observe(canvas);
+    resize();
+</script>
