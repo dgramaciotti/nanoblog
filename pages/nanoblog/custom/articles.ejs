@@ -7,7 +7,23 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
             <% if (typeof articles !== 'undefined' && articles.length > 0) { %>
-                <% articles.forEach(article => { %>
+                <% 
+                    // 1. Sort the articles by postDate (dd/mm/yyyy)
+                    articles.sort((a, b) => {
+                        const [dayA, monthA, yearA] = a.postDate.split('/').map(Number);
+                        const [dayB, monthB, yearB] = b.postDate.split('/').map(Number);
+                        
+                        // Create Date objects (Note: month is 0-indexed in JS, so we subtract 1)
+                        const dateA = new Date(yearA, monthA - 1, dayA);
+                        const dateB = new Date(yearB, monthB - 1, dayB);
+                        
+                        // Change to (dateA - dateB) for Oldest first
+                        return dateB - dateA; 
+                    });
+
+                    // 2. Run the forEach loop on the sorted array
+                    articles.forEach(article => { 
+                %>
                     <article class="flex gap-6">
                         <div class="shrink-0 w-24 h-24 rounded overflow-hidden">
                             <% if (article.coverImage) { %>

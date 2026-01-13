@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "build": "npx basic-ssg build"
+    "build": "npx basic-ssg build",
+    "dev": "npx basic-ssg build --watch",
+    "serve": "node server.js"
   },
   "keywords": [],
   "author": "",
