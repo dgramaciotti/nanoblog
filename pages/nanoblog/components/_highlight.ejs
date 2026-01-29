@@ -1,0 +1,33 @@
+<script>
+    const hljsScript = document.getElementById('hljsScript');
+hljsScript.onload = () => {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach((codeBlock) => {
+        const lines = codeBlock.innerHTML.split(/\r?\n/);
+        if (lines[lines.length - 1] === '') lines.pop();
+        
+        const lineNumbersHtml = lines.map((_, i) => `<span>${i + 1}</span>`).join('\n');
+        
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        
+        const nums = document.createElement('div');
+        nums.style.paddingRight = '1rem';
+        nums.style.marginRight = '1rem';
+        nums.style.borderRight = '1px solid #454545';
+        nums.style.color = '#858585';
+        nums.style.textAlign = 'right';
+        nums.style.userSelect = 'none';
+        nums.innerHTML = lineNumbersHtml;
+        
+        const content = document.createElement('div');
+        content.style.flex = '1';
+        content.innerHTML = codeBlock.innerHTML;
+        
+        codeBlock.innerHTML = '';
+        wrapper.appendChild(nums);
+        wrapper.appendChild(content);
+        codeBlock.appendChild(wrapper);
+    });
+};
+</script>

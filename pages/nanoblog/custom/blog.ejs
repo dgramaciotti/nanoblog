@@ -4,6 +4,15 @@
 
     <main class="grow">
         <div class="flex flex-col mx-auto w-[90%] max-w-3xl text-left py-16">
+            
+            <nav class="flex items-center gap-2 text-sm mb-4" style="color: #666;" aria-label="Breadcrumb">
+                <a href="/nanoblog/" class="hover:underline">Home</a>
+                <span>/</span>
+                <a href="/nanoblog/articles/" class="hover:underline">Articles</a>
+                <span>/</span>
+                <span class="truncate font-medium" style="color: var(--color-black);"><%= postName %></span>
+            </nav>
+
             <h1 class="font-bold text-5xl pb-6"><%= postName %></h1>
             
             <div class="py-6 mt-6 mb-16 flex flex-wrap items-center justify-start gap-8 border-t border-b" style="border-color: var(--color-border);">
