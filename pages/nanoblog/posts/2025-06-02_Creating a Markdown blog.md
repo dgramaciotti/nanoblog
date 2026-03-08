@@ -26,4 +26,4 @@ With that, I thought of the following way to do it
 - [ejs](https://ejs.co/) for some basic templating utilities
 - That's it!
 
-The final result has less than 20 base files, with only a few hundred lines of code. Perhaps I could have used jekyll, or some other engine, but given the effort this seems simple enough. Also, probably styling will be gradually implemented, let's see how it goes...
+The final result has less than 20 base files, with only a few hundred lines of code. Perhaps I could have used jekyll, or some other engine, but given the effort this seems simple enough. Also, probably styling will be gradually implemented, let's see how it goes.
